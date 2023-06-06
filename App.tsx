@@ -13,9 +13,4 @@ const App = () => {
 
 export default App;
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 30,
-    fontSize: 40,
-  },
-});
+const styles = StyleSheet.create({});
