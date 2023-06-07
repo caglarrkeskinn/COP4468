@@ -10,14 +10,22 @@ const Tab = createBottomTabNavigator();
 
 function MyTab() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: 'orange',
+        tabBarStyle: {backgroundColor: 'white'},
+      }}>
       <Tab.Screen
         name="Products"
         component={ProductScreen}
         options={{
           headerShown: false,
-          tabBarIcon: ({color, size}) => (
-            <Icon name="list" color={(color = 'gray')} size={(size = 30)} />
+          tabBarIcon: ({size, focused}) => (
+            <Icon
+              name="list"
+              color={focused ? 'orange' : 'gray'}
+              size={(size = 30)}
+            />
           ),
         }}
       />
@@ -26,10 +34,10 @@ function MyTab() {
         component={Categories}
         options={{
           headerShown: false,
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({size, focused}) => (
             <Icon
               name="plus-circle"
-              color={(color = 'gray')}
+              color={focused ? 'orange' : 'gray'}
               size={(size = 30)}
             />
           ),
@@ -40,8 +48,12 @@ function MyTab() {
         component={Orders}
         options={{
           headerShown: false,
-          tabBarIcon: ({color, size}) => (
-            <Icon name="dollar" color={(color = 'gray')} size={(size = 30)} />
+          tabBarIcon: ({size, focused}) => (
+            <Icon
+              name="dollar"
+              color={focused ? 'orange' : 'gray'}
+              size={(size = 30)}
+            />
           ),
         }}
       />
