@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface Product {
   id: any;
@@ -42,28 +43,45 @@ const ProductScreen = () => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: '#EF9B4A'}}>
       <FlatList
         data={products}
         renderItem={({item}: {item: Product}) => (
           <View style={{flexDirection: 'row'}}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 8,
+                borderBottomWidth: 2,
+                borderRadius: 10,
+                borderBottomColor: 'green',
+                backgroundColor: 'tomato',
+                margin: 5,
+                alignItems: 'center',
+              }}>
               <Text
                 style={{
-                  margin: 5,
                   fontSize: 15,
+                  fontWeight: 'bold',
+                  color: 'white',
                 }}>
                 {item.name}
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleDelete(item.id)}>
-              <Text style={{color: 'tomato'}}>Delete</Text>
+
+            <TouchableOpacity
+              style={{flex: 1, alignItems: 'center'}}
+              onPress={() => handleDelete(item.id)}>
+              <Icon name="trash-o" size={25} color="red" />
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => handleFavorite(item.id)}>
-              <Text style={{color: item.isFavorite ? 'blue' : 'black'}}>
-                Favorite
-              </Text>
+            <TouchableOpacity
+              style={{flex: 1, alignContent: 'center'}}
+              onPress={() => handleFavorite(item.id)}>
+              {item.isFavorite ? (
+                <Icon name="star" size={25} color="yellow" />
+              ) : (
+                <Icon name="star-o" size={25} color="gray" />
+              )}
             </TouchableOpacity>
           </View>
         )}
