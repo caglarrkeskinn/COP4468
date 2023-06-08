@@ -1,10 +1,11 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import ProductScreen from '../screens/ProductScreens/ProductScreen';
-import Categories from '../screens/CategoryScreens/CategoryList';
+import ProductScreen from '../screens/ProductScreen';
+import Categories from '../screens/CategoryList';
 import Orders from '../screens/Orders';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,8 +22,8 @@ function MyTab() {
         options={{
           headerShown: false,
           tabBarIcon: ({size, focused}) => (
-            <Icon
-              name="list"
+            <MaterialCommunityIcons
+              name="format-list-bulleted"
               color={focused ? 'orange' : 'gray'}
               size={(size = 30)}
             />
@@ -35,8 +36,8 @@ function MyTab() {
         options={{
           headerShown: false,
           tabBarIcon: ({size, focused}) => (
-            <Icon
-              name="plus-circle"
+            <MaterialCommunityIcons
+              name="shape-plus"
               color={focused ? 'orange' : 'gray'}
               size={(size = 30)}
             />
@@ -49,8 +50,8 @@ function MyTab() {
         options={{
           headerShown: false,
           tabBarIcon: ({size, focused}) => (
-            <Icon
-              name="dollar"
+            <MaterialCommunityIcons
+              name="cart"
               color={focused ? 'orange' : 'gray'}
               size={(size = 30)}
             />

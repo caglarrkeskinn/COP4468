@@ -10,6 +10,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Product {
   id: any;
@@ -58,6 +59,21 @@ const ProductScreen = () => {
 
   return (
     <SafeAreaView style={{backgroundColor: '#EF9B4A'}}>
+      <View style={{borderBottomWidth: 3,
+        borderBottomColor: "green",
+        alignItems: "center",
+        //textAlign: "center",
+        borderBottomLeftRadius: 25,
+        borderBottomRightRadius: 25,
+        backgroundColor: "tomato",
+        marginBottom:5,
+        height: 150}}/>
+        <Text style={{color: "#FFF",
+        fontSize: 35,
+        alignSelf: "center",
+        fontWeight: "bold",
+        top:-100
+        }}>Products</Text>
       {!selectedProduct && (
         <FlatList
           data={products}
@@ -95,21 +111,17 @@ const ProductScreen = () => {
                   borderRightWidth: 2,
                   borderEndColor: 'black',
                   borderRadius: 10,
-                  height: 50,
+                  height: 40,
                 }}
                 onPress={() => handleDelete(item.id)}>
-                <Icon
-                  style={{fontSize: 38, margin: 1}}
-                  name="trash-o"
-                  size={25}
-                  color="red"
-                />
+                <MaterialCommunityIcons name="delete" size={25} color="black" />
               </TouchableOpacity>
 
               <TouchableOpacity
                 style={{
                   flex: 1,
                   alignContent: 'center',
+                  alignItems:'center',
                   justifyContent: 'center',
                   borderBottomColor: 'black',
                   borderBottomWidth: 2,
@@ -117,22 +129,13 @@ const ProductScreen = () => {
                   borderEndColor: 'black',
                   borderRadius: 10,
                   marginEnd: 5,
+                  height:40
                 }}
                 onPress={() => handleFavorite(item.id)}>
                 {item.isFavorite ? (
-                  <Icon
-                    style={{fontSize: 30, margin: 1}}
-                    name="star"
-                    size={25}
-                    color="#FFDF40"
-                  />
+                  <MaterialCommunityIcons name="star" size={25} color="black" />
                 ) : (
-                  <Icon
-                    style={{fontSize: 30, margin: 1}}
-                    name="star"
-                    size={25}
-                    color="gray"
-                  />
+                  <MaterialCommunityIcons name="star-outline" size={25} color="black" />
                 )}
               </TouchableOpacity>
             </View>
