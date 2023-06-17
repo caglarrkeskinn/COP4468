@@ -9,13 +9,14 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Card} from 'react-native-paper';
 
 interface Category {
   id: number;
   name: string;
   description: string;
-  categoryId: number; // Assuming `categoryId` is the correct property name for the category ID
+  categoryId: number;
 }
 
 const CategoriesScreen = () => {
@@ -98,103 +99,33 @@ const CategoriesScreen = () => {
     }
   };
 
-  const renderCategory = ({item}: {item: Category}) => {
-    return (
-      
-      <View style={styles.categoryContainer}>
-        
-        <View style={styles.categoryName}>
-          <Text style={{fontSize: 15, fontWeight: 'bold', color: 'white'}}>
-            {item.name}
-          </Text>
-          <Text>{item.description}</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={{justifyContent: 'center'}}
-            onPress={() => deleteCategory(item.id)}>
-            <MaterialCommunityIcons name="delete" size={25} color="black" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{justifyContent: 'center'}}
-            onPress={() => handleEdit(item)}>
-            <MaterialCommunityIcons name="pencil-box-multiple" size={25} color="black" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-
-  const AddCategories = () => {
-    return (
-      <>
-        <View>
-          <TouchableOpacity
-            style={{
-              width: 30,
-              height: 30,
-              borderBottomColor: 'black',
-              borderBottomWidth: 2,
-              borderRightWidth: 2,
-              borderEndColor: 'black',
-              marginBottom: 5,
-              marginLeft: 5,
-              borderRadius: 10,
-              margin: -30,
-            }}
-            onPress={() => setShow(!show)}>
-            <Icon
-              style={{margin: 3}}
-              name="arrow-left"
-              size={20}
-              color="black"
-            />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.containerAdd}>
-          <TextInput
-            style={styles.input}
-            placeholder="Category Name"
-            value={categoryName}
-            onChangeText={text => setCategoryName(text)}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Category Detail"
-            value={categoryDetail}
-            onChangeText={text => setCategoryDetail(text)}
-          />
-
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Add to Categories</Text>
-          </TouchableOpacity>
-        </View>
-      </>
-    );
-  };
-
   const [showEditModal, setShowEditModal] = useState(false);
 
   return (
-    <>
-    
-      <View style={styles.container}>
-      <View style={{borderBottomWidth: 3,
-        borderBottomColor: "green",
-        alignItems: "center",
-        //textAlign: "center",
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25,
-        backgroundColor: "tomato",
-        marginBottom:5,
-        height: 150}}/>
-        <Text style={{color: "#FFF",
-        fontSize: 35,
-        alignSelf: "center",
-        fontWeight: "bold",
-        top:-100
-        }}>Category</Text>
+    <View style={{backgroundColor: '#EF9B4A', flex: 1}}>
+      <View
+        style={{
+          borderBottomWidth: 3,
+          borderBottomColor: 'green',
+          alignItems: 'center',
+          borderBottomLeftRadius: 25,
+          borderBottomRightRadius: 25,
+          backgroundColor: 'tomato',
+          marginBottom: 5,
+          flex: 1,
+          justifyContent: 'center',
+        }}>
+        <Text
+          style={{
+            color: '#FFF',
+            fontSize: 35,
+            alignSelf: 'center',
+            top: '10%',
+            fontWeight: 'bold',
+          }}>
+          Category
+        </Text>
+
         <TouchableOpacity
           style={{
             width: 30,
@@ -203,56 +134,146 @@ const CategoriesScreen = () => {
             borderBottomWidth: 2,
             borderRightWidth: 2,
             borderEndColor: 'black',
-            marginBottom: 5,
-            marginHorizontal: '90%',
-            //left: '90%',
             borderRadius: 10,
-            margin: -50,
+            alignSelf: 'flex-end',
+            top: '-40%',
+            right: '2%',
           }}
           onPress={() => setShow(false)}>
           <Icon style={{margin: 5}} name="plus" size={20} color="black" />
         </TouchableOpacity>
-        {show && (
+      </View>
+      {show && (
+        <View style={{flex: 3}}>
+          <FlatList
+            data={categories}
+            renderItem={({item}: {item: Category}) => (
+              <View style={styles.categoryContainer}>
+                <Card
+                  style={{
+                    padding: 5,
+                    flex: 8,
+                    borderBottomWidth: 2,
+                    borderRadius: 10,
+                    borderBottomColor: 'green',
+                    backgroundColor: 'tomato',
+                    margin: 5,
+                  }}>
+                  <Card.Title
+                    titleStyle={{
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      color: 'white',
+                    }}
+                    title={item.name}></Card.Title>
+                  <Text>{item.description}</Text>
+                </Card>
+
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                  <TouchableOpacity
+                    style={{justifyContent: 'center'}}
+                    onPress={() => deleteCategory(item.id)}>
+                    <MaterialCommunityIcons
+                      name="delete"
+                      size={25}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                  <TouchableOpacity
+                    style={{justifyContent: 'center'}}
+                    onPress={() => handleEdit(item)}>
+                    <MaterialCommunityIcons
+                      name="pencil-box-multiple"
+                      size={25}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item: Category) => item.id.toString()}
+          />
+        </View>
+      )}
+      {showEditModal && (
+        <View style={styles.editModalContainer}>
+          <Text>Edit Category</Text>
+          <TextInput
+            style={styles.input}
+            value={editName}
+            onChangeText={text => setEditName(text)}
+            placeholder="Category Name"
+          />
+          <TextInput
+            style={styles.input}
+            value={editDetail}
+            onChangeText={text => setEditDetail(text)}
+            placeholder="Category Detail"
+          />
+          <TouchableOpacity
+            style={styles.updateButton}
+            onPress={updateCategory}>
+            <Text style={styles.buttonText}>Update</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {!show && !showEditModal && (
+        <>
           <View>
-            <FlatList
-              data={categories}
-              renderItem={renderCategory}
-              keyExtractor={item => item.id.toString()}
-            />
-          </View>
-        )}
-        {showEditModal && (
-          <View style={styles.editModalContainer}>
-            <Text>Edit Category</Text>
-            <TextInput
-              style={styles.input}
-              value={editName}
-              onChangeText={text => setEditName(text)}
-              placeholder="Category Name"
-            />
-            <TextInput
-              style={styles.input}
-              value={editDetail}
-              onChangeText={text => setEditDetail(text)}
-              placeholder="Category Detail"
-            />
             <TouchableOpacity
-              style={styles.updateButton}
-              onPress={updateCategory}>
-              <Text style={styles.buttonText}>Update</Text>
+              style={{
+                width: 30,
+                height: 30,
+                borderBottomColor: 'black',
+                borderBottomWidth: 2,
+                borderRightWidth: 2,
+                borderEndColor: 'black',
+                marginBottom: 5,
+                marginLeft: 5,
+                borderRadius: 10,
+                margin: -30,
+              }}
+              onPress={() => setShow(!show)}>
+              <Icon
+                style={{margin: 3}}
+                name="arrow-left"
+                size={20}
+                color="black"
+              />
             </TouchableOpacity>
           </View>
-        )}
-        {!show && !showEditModal && <AddCategories />}
-      </View>
-    </>
+          <View style={styles.containerAdd}>
+            <TextInput
+              style={styles.input}
+              placeholder="Category Name"
+              value={categoryName}
+              onChangeText={text => setCategoryName(text)}
+            />
+            <TextInput
+              style={styles.input}
+              placeholder="Category Detail"
+              value={categoryDetail}
+              onChangeText={text => setCategoryDetail(text)}
+            />
+
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={handleSubmit}>
+              <Text style={styles.buttonText}>Add to Categories</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#EF9B4A',
-    flex: 1,
+    flex: 6,
   },
   input: {
     backgroundColor: 'white',
@@ -283,8 +304,7 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
+
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },

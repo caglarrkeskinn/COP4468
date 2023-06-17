@@ -11,6 +11,7 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {Avatar, Button, Card} from 'react-native-paper';
 
 interface Product {
   id: any;
@@ -58,93 +59,97 @@ const ProductScreen = () => {
   };
 
   return (
-    <SafeAreaView style={{backgroundColor: '#EF9B4A'}}>
-      <View style={{borderBottomWidth: 3,
-        borderBottomColor: "green",
-        alignItems: "center",
-        //textAlign: "center",
-        borderBottomLeftRadius: 25,
-        borderBottomRightRadius: 25,
-        backgroundColor: "tomato",
-        marginBottom:5,
-        height: 150}}/>
-        <Text style={{color: "#FFF",
-        fontSize: 35,
-        alignSelf: "center",
-        fontWeight: "bold",
-        top:-100
-        }}>Products</Text>
+    <View style={{backgroundColor: '#EF9B4A', flex: 1}}>
+      <View
+        style={{
+          borderBottomWidth: 3,
+          borderBottomColor: 'green',
+          alignItems: 'center',
+          borderBottomLeftRadius: 25,
+          borderBottomRightRadius: 25,
+          backgroundColor: 'tomato',
+          marginBottom: 5,
+          flex: 1,
+          justifyContent: 'center',
+        }}>
+        <Text
+          style={{
+            color: '#FFF',
+            fontSize: 35,
+            alignSelf: 'center',
+            fontWeight: 'bold',
+          }}>
+          Products
+        </Text>
+      </View>
       {!selectedProduct && (
-        <FlatList
-          data={products}
-          renderItem={({item}: {item: Product}) => (
-            <View style={{flexDirection: 'row'}}>
-              <TouchableOpacity
-                style={{
-                  padding: 12,
-                  flex: 8,
-                  borderBottomWidth: 2,
-                  borderRadius: 10,
-                  borderBottomColor: 'green',
-                  backgroundColor: 'tomato',
-                  margin: 5,
-                  alignItems: 'center',
-                }}
-                onPress={() => handleItemPress(item.id)}>
-                <Text
+        <View style={{flex: 3}}>
+          <FlatList
+            data={products}
+            renderItem={({item}: {item: Product}) => (
+              <View style={{flexDirection: 'row'}}>
+                <Card
                   style={{
-                    fontSize: 15,
-                    fontWeight: 'bold',
-                    color: 'white',
-                  }}>
-                  {item.name}
-                </Text>
-              </TouchableOpacity>
+                    padding: 5,
+                    flex: 8,
+                    borderBottomWidth: 2,
+                    borderRadius: 10,
+                    borderBottomColor: 'green',
+                    backgroundColor: 'tomato',
+                    margin: 5,
+                  }}
+                  onPress={() => handleItemPress(item.id)}>
+                  <Card.Title
+                    titleStyle={{
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      color: 'white',
+                    }}
+                    title={item.name}></Card.Title>
+                </Card>
 
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderBottomColor: 'black',
-                  borderBottomWidth: 2,
-                  borderRightWidth: 2,
-                  borderEndColor: 'black',
-                  borderRadius: 10,
-                  height: 40,
-                }}
-                onPress={() => handleDelete(item.id)}>
-                <MaterialCommunityIcons name="delete" size={25} color="black" />
-              </TouchableOpacity>
-
-              <TouchableOpacity
-                style={{
-                  flex: 1,
-                  alignContent: 'center',
-                  alignItems:'center',
-                  justifyContent: 'center',
-                  borderBottomColor: 'black',
-                  borderBottomWidth: 2,
-                  borderRightWidth: 2,
-                  borderEndColor: 'black',
-                  borderRadius: 10,
-                  marginEnd: 5,
-                  height:40
-                }}
-                onPress={() => handleFavorite(item.id)}>
-                {item.isFavorite ? (
-                  <MaterialCommunityIcons name="star" size={25} color="black" />
-                ) : (
-                  <MaterialCommunityIcons name="star-outline" size={25} color="black" />
-                )}
-              </TouchableOpacity>
-            </View>
-          )}
-          keyExtractor={(item: Product) => item.id.toString()}
-        />
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                  <TouchableOpacity
+                    style={{
+                      justifyContent: 'center',
+                    }}
+                    onPress={() => handleDelete(item.id)}>
+                    <MaterialCommunityIcons
+                      name="delete"
+                      size={25}
+                      color="black"
+                    />
+                  </TouchableOpacity>
+                </View>
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                  <TouchableOpacity
+                    style={{
+                      justifyContent: 'center',
+                    }}
+                    onPress={() => handleFavorite(item.id)}>
+                    {item.isFavorite ? (
+                      <MaterialCommunityIcons
+                        name="star"
+                        size={25}
+                        color="black"
+                      />
+                    ) : (
+                      <MaterialCommunityIcons
+                        name="star-outline"
+                        size={25}
+                        color="black"
+                      />
+                    )}
+                  </TouchableOpacity>
+                </View>
+              </View>
+            )}
+            keyExtractor={(item: Product) => item.id.toString()}
+          />
+        </View>
       )}
       {selectedProduct && (
-        <>
+        <View style={{flex: 3}}>
           <TouchableOpacity
             style={{
               width: 30,
@@ -165,161 +170,85 @@ const ProductScreen = () => {
               color="black"
             />
           </TouchableOpacity>
-          <View
-            style={{
-              borderBottomWidth: 2,
-              borderEndWidth: 2,
-              borderRadius: 10,
-              borderBottomColor: 'black',
-              borderEndColor: 'black',
-              backgroundColor: 'tomato',
-              margin: 5,
-              marginVertical: '25%',
-              marginBottom: '100%',
-              padding: 10,
-              alignItems: 'stretch',
-            }}>
-            <View
+          <View style={{marginTop: '10%'}}>
+            <Card
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderBottomColor: 'green',
-                borderBottomWidth: 1,
-                marginBottom: 2,
+                flexDirection: 'column',
+                backgroundColor: 'red',
               }}>
-              <Text style={{textAlign: 'center'}}>Product ID:</Text>
-              <Text style={{textAlign: 'center'}}>{selectedProduct.id}</Text>
-            </View>
+              <Card.Title
+                title={selectedProduct.name}
+                titleStyle={{color: 'white', fontWeight: 'bold'}}
+              />
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderBottomColor: 'green',
-                borderBottomWidth: 1,
-                marginBottom: 2,
-              }}>
-              <Text style={{textAlign: 'center'}}>Supplier ID:</Text>
-              <Text style={{textAlign: 'center'}}>
-                {selectedProduct.supplierId}
-              </Text>
-            </View>
+              <Card.Content
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{textAlign: 'center'}}>Product ID:</Text>
+                <Text style={{textAlign: 'center'}}>{selectedProduct.id}</Text>
+              </Card.Content>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderBottomColor: 'green',
-                borderBottomWidth: 1,
-                marginBottom: 2,
-              }}>
-              <Text style={{textAlign: 'center'}}>Category ID:</Text>
-              <Text style={{textAlign: 'center'}}>
-                {selectedProduct.categoryId}
-              </Text>
-            </View>
+              <Card.Content
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text>Supplier ID:</Text>
+                <Text>{selectedProduct.supplierId}</Text>
+              </Card.Content>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderBottomColor: 'green',
-                borderBottomWidth: 1,
-                marginBottom: 2,
-              }}>
-              <Text style={{textAlign: 'center'}}>Quantity Per Unit:</Text>
-              <Text style={{textAlign: 'center'}}>
-                {selectedProduct.quantityPerUnit}
-              </Text>
-            </View>
+              <Card.Content
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text>Category ID:</Text>
+                <Text>{selectedProduct.categoryId}</Text>
+              </Card.Content>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderBottomColor: 'green',
-                borderBottomWidth: 1,
-                marginBottom: 2,
-              }}>
-              <Text style={{textAlign: 'center'}}>Unit Price:</Text>
-              <Text style={{textAlign: 'center'}}>
-                {selectedProduct.unitPrice}
-              </Text>
-            </View>
+              <Card.Content
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text>Quantity Per Unit:</Text>
+                <Text>{selectedProduct.quantityPerUnit}</Text>
+              </Card.Content>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderBottomColor: 'green',
-                borderBottomWidth: 1,
-                marginBottom: 2,
-              }}>
-              <Text style={{textAlign: 'center'}}>Units In Stock:</Text>
-              <Text style={{textAlign: 'center'}}>
-                {selectedProduct.unitsInStock}
-              </Text>
-            </View>
+              <Card.Content
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{textAlign: 'center'}}>Unit Price:</Text>
+                <Text style={{textAlign: 'center'}}>
+                  {selectedProduct.unitPrice}
+                </Text>
+              </Card.Content>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderBottomColor: 'green',
-                borderBottomWidth: 1,
-                marginBottom: 2,
-              }}>
-              <Text style={{textAlign: 'center'}}>Units In Order:</Text>
-              <Text style={{textAlign: 'center'}}>
-                {selectedProduct.unitsOnOrder}
-              </Text>
-            </View>
+              <Card.Content
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{textAlign: 'center'}}>Units In Stock:</Text>
+                <Text style={{textAlign: 'center'}}>
+                  {selectedProduct.unitsInStock}
+                </Text>
+              </Card.Content>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderBottomColor: 'green',
-                borderBottomWidth: 1,
-                marginBottom: 2,
-              }}>
-              <Text style={{textAlign: 'center'}}>Reorder Level:</Text>
-              <Text style={{textAlign: 'center'}}>
-                {selectedProduct.reorderLevel}
-              </Text>
-            </View>
+              <Card.Content
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{textAlign: 'center'}}>Units In Order:</Text>
+                <Text style={{textAlign: 'center'}}>
+                  {selectedProduct.unitsOnOrder}
+                </Text>
+              </Card.Content>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderBottomColor: 'green',
-                borderBottomWidth: 1,
-                marginBottom: 2,
-              }}>
-              <Text style={{textAlign: 'center'}}>Discontinued:</Text>
-              <Text style={{textAlign: 'center'}}>
-                {selectedProduct.discontinued.toString()}
-              </Text>
-            </View>
+              <Card.Content
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{textAlign: 'center'}}>Reorder Level:</Text>
+                <Text style={{textAlign: 'center'}}>
+                  {selectedProduct.reorderLevel}
+                </Text>
+              </Card.Content>
 
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                borderBottomColor: 'green',
-                borderBottomWidth: 1,
-                marginBottom: 2,
-              }}>
-              <Text style={{textAlign: 'center'}}>Product Name:</Text>
-              <Text style={{textAlign: 'center', flexWrap: 'wrap'}}>
-                {selectedProduct.name}
-              </Text>
-            </View>
+              <Card.Content
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={{textAlign: 'center'}}>Discontinued:</Text>
+                <Text style={{textAlign: 'center'}}>
+                  {selectedProduct.discontinued.toString()}
+                </Text>
+              </Card.Content>
+            </Card>
           </View>
-        </>
+        </View>
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
