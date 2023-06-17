@@ -8,9 +8,8 @@ import {
   TextInput,
 } from 'react-native';
 import axios from 'axios';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Card} from 'react-native-paper';
+import {Card, FAB} from 'react-native-paper';
 
 interface Category {
   id: number;
@@ -107,14 +106,23 @@ const CategoriesScreen = () => {
         style={{
           borderBottomWidth: 3,
           borderBottomColor: 'green',
-          alignItems: 'center',
+          alignItems: 'stretch',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           backgroundColor: 'tomato',
           marginBottom: 5,
           flex: 1,
-          justifyContent: 'center',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          padding: 20,
         }}>
+        {!show && !showEditModal && (
+          <FAB
+            icon="arrow-left"
+            style={styles.fab2}
+            onPress={() => setShow(!show)}
+          />
+        )}
         <Text
           style={{
             color: '#FFF',
@@ -125,24 +133,9 @@ const CategoriesScreen = () => {
           }}>
           Category
         </Text>
-
-        <TouchableOpacity
-          style={{
-            width: 30,
-            height: 30,
-            borderBottomColor: 'black',
-            borderBottomWidth: 2,
-            borderRightWidth: 2,
-            borderEndColor: 'black',
-            borderRadius: 10,
-            alignSelf: 'flex-end',
-            top: '-40%',
-            right: '2%',
-          }}
-          onPress={() => setShow(false)}>
-          <Icon style={{margin: 5}} name="plus" size={20} color="black" />
-        </TouchableOpacity>
+        <FAB icon="plus" style={styles.fab} onPress={() => setShow(false)} />
       </View>
+
       {show && (
         <View style={{flex: 3}}>
           <FlatList
@@ -221,29 +214,6 @@ const CategoriesScreen = () => {
       )}
       {!show && !showEditModal && (
         <>
-          <View>
-            <TouchableOpacity
-              style={{
-                width: 30,
-                height: 30,
-                borderBottomColor: 'black',
-                borderBottomWidth: 2,
-                borderRightWidth: 2,
-                borderEndColor: 'black',
-                marginBottom: 5,
-                marginLeft: 5,
-                borderRadius: 10,
-                margin: -30,
-              }}
-              onPress={() => setShow(!show)}>
-              <Icon
-                style={{margin: 3}}
-                name="arrow-left"
-                size={20}
-                color="black"
-              />
-            </TouchableOpacity>
-          </View>
           <View style={styles.containerAdd}>
             <TextInput
               style={styles.input}
@@ -275,6 +245,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#EF9B4A',
     flex: 6,
   },
+  fab: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+
+    alignItems: 'center',
+    //top: '-40%',
+    //left: '40%',
+    backgroundColor: '#EF9B4A',
+  },
+  fab2: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    //top: '-50%',
+    backgroundColor: '#EF9B4A',
+  },
   input: {
     backgroundColor: 'white',
     marginBottom: 16,
@@ -285,7 +273,7 @@ const styles = StyleSheet.create({
     width: 250,
   },
   containerAdd: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#EF9B4A',

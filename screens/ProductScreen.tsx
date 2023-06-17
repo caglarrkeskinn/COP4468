@@ -11,7 +11,7 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Avatar, Button, Card} from 'react-native-paper';
+import {Card} from 'react-native-paper';
 
 interface Product {
   id: any;
@@ -30,12 +30,15 @@ interface Product {
 const ProductScreen = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [favorite, setFavorite] = useState<Product[]>([]);
+  const [show, setShow] = useState(true);
 
   useEffect(() => {
     axios.get('https://northwind.vercel.app/api/products').then(res => {
       setProducts(res.data);
     });
   }, []);
+
   const handleDelete = (productId: any) => {
     const updatedProducts = products.filter(item => item.id !== productId);
     setProducts(updatedProducts);
@@ -51,7 +54,10 @@ const ProductScreen = () => {
       }
       return item;
     });
+    const updatedFavorites = updatedProducts.filter(item => item.isFavorite);
+
     setProducts(updatedProducts);
+    setFavorite(updatedFavorites);
   };
   const handleItemPress = (productId: any) => {
     const selectedProduct = products.find(item => item.id === productId);
@@ -81,8 +87,90 @@ const ProductScreen = () => {
           }}>
           Products
         </Text>
+        <TouchableOpacity
+          style={{
+            width: 30,
+            height: 30,
+            borderBottomColor: 'black',
+            borderBottomWidth: 2,
+            borderRightWidth: 2,
+            borderEndColor: 'black',
+            borderRadius: 10,
+            alignSelf: 'flex-end',
+            top: '-40%',
+            right: '2%',
+          }}
+          onPress={() => setShow(!show)}>
+          <Icon style={{margin: 5}} name="plus" size={20} color="black" />
+        </TouchableOpacity>
       </View>
-      {!selectedProduct && (
+      {!show && (
+        <View style={{flex: 3}}>
+          <FlatList
+            data={favorite}
+            renderItem={({item}: {item: Product}) => (
+              <View style={{flexDirection: 'row'}}>
+                <Card
+                  style={{
+                    padding: 5,
+                    flex: 8,
+                    borderBottomWidth: 2,
+                    borderRadius: 10,
+                    borderBottomColor: 'green',
+                    backgroundColor: 'tomato',
+                    margin: 5,
+                  }}
+                  onPress={() => handleItemPress(item.id)}>
+                  <Card.Title
+                    titleStyle={{
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      color: 'white',
+                    }}
+                    title={item.name}
+                  />
+                  {show && (
+                    <View style={{flexDirection: 'row'}}>
+                      <TouchableOpacity
+                        style={{
+                          justifyContent: 'center',
+                        }}
+                        onPress={() => handleDelete(item.id)}>
+                        <MaterialCommunityIcons
+                          name="delete"
+                          size={25}
+                          color="black"
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={{
+                          justifyContent: 'center',
+                        }}
+                        onPress={() => handleFavorite(item.id)}>
+                        {item.isFavorite ? (
+                          <MaterialCommunityIcons
+                            name="star"
+                            size={25}
+                            color="black"
+                          />
+                        ) : (
+                          <MaterialCommunityIcons
+                            name="star-outline"
+                            size={25}
+                            color="black"
+                          />
+                        )}
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </Card>
+              </View>
+            )}
+            keyExtractor={(item: Product) => item.id.toString()}
+          />
+        </View>
+      )}
+      {!selectedProduct && show && (
         <View style={{flex: 3}}>
           <FlatList
             data={products}
@@ -148,7 +236,7 @@ const ProductScreen = () => {
           />
         </View>
       )}
-      {selectedProduct && (
+      {selectedProduct && show && (
         <View style={{flex: 3}}>
           <TouchableOpacity
             style={{
