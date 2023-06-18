@@ -11,7 +11,7 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Card} from 'react-native-paper';
+import {Card, FAB} from 'react-native-paper';
 
 interface Product {
   id: any;
@@ -65,44 +65,40 @@ const ProductScreen = () => {
   };
 
   return (
-    <View style={{backgroundColor: '#EF9B4A', flex: 1}}>
+    <View style={{backgroundColor: 'linear-gradient(#e66465, #9198e5)', flex: 1}}>
       <View
         style={{
           borderBottomWidth: 3,
           borderBottomColor: 'green',
-          alignItems: 'center',
+          alignItems: 'stretch',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
           backgroundColor: 'tomato',
           marginBottom: 5,
           flex: 1,
-          justifyContent: 'center',
+          justifyContent: 'space-between',
+          flexDirection:'row',
+          padding:20
         }}>
-        <Text
+          <Text
           style={{
+            flex:2,
             color: '#FFF',
             fontSize: 35,
             alignSelf: 'center',
             fontWeight: 'bold',
+            top: '10%',
           }}>
           Products
         </Text>
-        <TouchableOpacity
-          style={{
-            width: 30,
-            height: 30,
-            borderBottomColor: 'black',
-            borderBottomWidth: 2,
-            borderRightWidth: 2,
-            borderEndColor: 'black',
-            borderRadius: 10,
-            alignSelf: 'flex-end',
-            top: '-40%',
-            right: '2%',
-          }}
-          onPress={() => setShow(!show)}>
-          <Icon style={{margin: 5}} name="plus" size={20} color="black" />
-        </TouchableOpacity>
+           <FAB
+            icon="star"
+            style={styles.fab}
+            onPress={() => setShow(!show)}
+          />
+        
+       
+        
       </View>
       {!show && (
         <View style={{flex: 3}}>
@@ -342,4 +338,13 @@ const ProductScreen = () => {
 
 export default ProductScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  fab: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#EF9B4A',
+    
+  },
+});
