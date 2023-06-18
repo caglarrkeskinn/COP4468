@@ -11,7 +11,7 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Card, FAB} from 'react-native-paper';
+import {Card, FAB, Snackbar} from 'react-native-paper';
 
 interface Product {
   id: any;
@@ -32,6 +32,9 @@ const ProductScreen = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [favorite, setFavorite] = useState<Product[]>([]);
   const [show, setShow] = useState(true);
+  const [visible, setVisible] = useState(false);
+  const onDismissSnackBar = () => setVisible(false);
+  
 
   useEffect(() => {
     axios.get('https://northwind.vercel.app/api/products').then(res => {
@@ -42,6 +45,9 @@ const ProductScreen = () => {
   const handleDelete = (productId: any) => {
     const updatedProducts = products.filter(item => item.id !== productId);
     setProducts(updatedProducts);
+    setVisible(true);
+    
+    
   };
 
   const handleFavorite = (productId: any) => {
@@ -65,21 +71,27 @@ const ProductScreen = () => {
   };
 
   return (
-    <View style={{backgroundColor: 'linear-gradient(#e66465, #9198e5)', flex: 1}}>
+    <View style={{backgroundColor: '#527a7a', flex: 1}}>
       <View
         style={{
-          borderBottomWidth: 3,
-          borderBottomColor: 'green',
+          backgroundColor: '#5c8a8a',
+          borderBottomWidth: 10,
+          borderBottomColor: '#cc5200',
           alignItems: 'stretch',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
-          backgroundColor: 'tomato',
           marginBottom: 5,
-          flex: 1,
+          flex: 0.5,
           justifyContent: 'space-between',
           flexDirection:'row',
           padding:20
         }}>
+           {selectedProduct && show && (
+          <FAB
+            icon="arrow-left"
+            style={styles.fab2}
+            onPress={() => handleItemPress(null)}
+          />)}
           <Text
           style={{
             flex:2,
@@ -96,12 +108,9 @@ const ProductScreen = () => {
             style={styles.fab}
             onPress={() => setShow(!show)}
           />
-        
-       
-        
       </View>
       {!show && (
-        <View style={{flex: 3}}>
+        <View style={{flex: 4}}>
           <FlatList
             data={favorite}
             renderItem={({item}: {item: Product}) => (
@@ -112,8 +121,8 @@ const ProductScreen = () => {
                     flex: 8,
                     borderBottomWidth: 2,
                     borderRadius: 10,
-                    borderBottomColor: 'green',
-                    backgroundColor: 'tomato',
+                    borderBottomColor: 'black',
+                    backgroundColor: '#cc5200',
                     margin: 5,
                   }}
                   onPress={() => handleItemPress(item.id)}>
@@ -138,6 +147,8 @@ const ProductScreen = () => {
                           color="black"
                         />
                       </TouchableOpacity>
+                      
+                     
                       <TouchableOpacity
                         style={{
                           justifyContent: 'center',
@@ -157,6 +168,7 @@ const ProductScreen = () => {
                           />
                         )}
                       </TouchableOpacity>
+                      
                     </View>
                   )}
                 </Card>
@@ -178,8 +190,8 @@ const ProductScreen = () => {
                     flex: 8,
                     borderBottomWidth: 2,
                     borderRadius: 10,
-                    borderBottomColor: 'green',
-                    backgroundColor: 'tomato',
+                    borderBottomColor: 'black',
+                    backgroundColor: '#cc5200',
                     margin: 5,
                   }}
                   onPress={() => handleItemPress(item.id)}>
@@ -234,31 +246,12 @@ const ProductScreen = () => {
       )}
       {selectedProduct && show && (
         <View style={{flex: 3}}>
-          <TouchableOpacity
-            style={{
-              width: 30,
-              height: 30,
-              borderBottomColor: 'black',
-              borderBottomWidth: 2,
-              borderRightWidth: 2,
-              borderEndColor: 'black',
-              marginBottom: 5,
-              marginLeft: 5,
-              borderRadius: 10,
-            }}
-            onPress={() => handleItemPress(null)}>
-            <Icon
-              style={{margin: 3}}
-              name="arrow-left"
-              size={20}
-              color="black"
-            />
-          </TouchableOpacity>
+          
           <View style={{marginTop: '10%'}}>
             <Card
               style={{
                 flexDirection: 'column',
-                backgroundColor: 'red',
+                backgroundColor: '#cc5200',
               }}>
               <Card.Title
                 title={selectedProduct.name}
@@ -332,6 +325,14 @@ const ProductScreen = () => {
           </View>
         </View>
       )}
+      <Snackbar
+         visible={visible}
+         onDismiss={onDismissSnackBar}
+         action={{label: 'OK',
+           onPress: () => {setVisible(false)},
+           }}>
+          Product is deleted!
+      </Snackbar>
     </View>
   );
 };
@@ -344,7 +345,15 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#EF9B4A',
+    backgroundColor: '#cc5200',
     
+  },
+  fab2: {
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    //top: '-50%',
+    backgroundColor: '#cc5200',
   },
 });

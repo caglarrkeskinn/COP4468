@@ -101,17 +101,17 @@ const CategoriesScreen = () => {
   const [showEditModal, setShowEditModal] = useState(false);
 
   return (
-    <View style={{backgroundColor: '#EF9B4A', flex: 1}}>
+    <View style={{backgroundColor: '#527a7a', flex: 1}}>
       <View
         style={{
-          borderBottomWidth: 3,
-          borderBottomColor: 'green',
+          borderBottomWidth: 10,
+          borderBottomColor: '#cc5200',
           alignItems: 'stretch',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
-          backgroundColor: 'tomato',
+          backgroundColor: '#5c8a8a',
           marginBottom: 5,
-          flex: 1,
+          flex: 0.5,
           flexDirection: 'row',
           justifyContent: 'space-between',
           padding: 20,
@@ -148,8 +148,8 @@ const CategoriesScreen = () => {
                     flex: 8,
                     borderBottomWidth: 2,
                     borderRadius: 10,
-                    borderBottomColor: 'green',
-                    backgroundColor: 'tomato',
+                    borderBottomColor: 'black',
+                    backgroundColor: '#cc5200',
                     margin: 5,
                   }}>
                   <Card.Title
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //top: '-40%',
     //left: '40%',
-    backgroundColor: '#EF9B4A',
+    backgroundColor: '#cc5200',
   },
   fab2: {
     width: 40,
@@ -261,7 +261,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     //top: '-50%',
-    backgroundColor: '#EF9B4A',
+    backgroundColor: '#cc5200',
   },
   input: {
     backgroundColor: 'white',
@@ -276,7 +276,7 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#EF9B4A',
+    backgroundColor: '#527a7a',
   },
   buttonText: {
     color: 'white',
@@ -309,10 +309,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   editModalContainer: {
-    flex: 1,
+    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#EF9B4A',
+    backgroundColor: '#527a7a',
   },
   updateButton: {
     backgroundColor: '#191c2b',
