@@ -13,8 +13,9 @@ function MyTab() {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: 'orange',
-        tabBarStyle: {backgroundColor: 'white'},
+        tabBarActiveTintColor: '#4876AB',
+        tabBarStyle: {backgroundColor: '#f2f2f2',borderRadius:40,position:'absolute'},
+        
       }}>
       <Tab.Screen
         name="Products"
@@ -24,7 +25,7 @@ function MyTab() {
           tabBarIcon: ({size, focused}) => (
             <MaterialCommunityIcons
               name="format-list-bulleted"
-              color={focused ? 'orange' : 'gray'}
+              color={focused ? '#4876AB' : 'black'}
               size={(size = 30)}
             />
           ),
@@ -38,7 +39,7 @@ function MyTab() {
           tabBarIcon: ({size, focused}) => (
             <MaterialCommunityIcons
               name="shape-plus"
-              color={focused ? 'orange' : 'gray'}
+              color={focused ? '#4876AB' : 'black'}
               size={(size = 30)}
             />
           ),
@@ -52,7 +53,7 @@ function MyTab() {
           tabBarIcon: ({size, focused}) => (
             <MaterialCommunityIcons
               name="cart"
-              color={focused ? 'orange' : 'gray'}
+              color={focused ? '#4876AB' : 'black'}
               size={(size = 30)}
             />
           ),

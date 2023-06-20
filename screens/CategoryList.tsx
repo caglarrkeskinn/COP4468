@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Card, FAB} from 'react-native-paper';
+import {Card, FAB, Snackbar} from 'react-native-paper';
 
 interface Category {
   id: number;
@@ -26,6 +26,8 @@ const CategoriesScreen = () => {
   const [editCategory, setEditCategory] = useState<Category | null>(null);
   const [editName, setEditName] = useState('');
   const [editDetail, setEditDetail] = useState('');
+  const [visible, setVisible] = useState(false);
+  const onDismissSnackBar = () => setVisible(false);
 
   useEffect(() => {
     fetchCategories();
@@ -48,6 +50,7 @@ const CategoriesScreen = () => {
         `https://northwind.vercel.app/api/categories/${categoryId}`,
       );
       fetchCategories();
+      setVisible(true);
     } catch (error) {
       console.error(error);
     }
@@ -101,15 +104,15 @@ const CategoriesScreen = () => {
   const [showEditModal, setShowEditModal] = useState(false);
 
   return (
-    <View style={{backgroundColor: '#527a7a', flex: 1}}>
+    <View style={{backgroundColor: '#f2f2f2', flex: 1}}>
       <View
         style={{
           borderBottomWidth: 10,
-          borderBottomColor: '#cc5200',
+          borderBottomColor: '#4876AB',
           alignItems: 'stretch',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
-          backgroundColor: '#5c8a8a',
+          backgroundColor: '#3daeaf',
           marginBottom: 5,
           flex: 0.5,
           flexDirection: 'row',
@@ -149,7 +152,7 @@ const CategoriesScreen = () => {
                     borderBottomWidth: 2,
                     borderRadius: 10,
                     borderBottomColor: 'black',
-                    backgroundColor: '#cc5200',
+                    backgroundColor: '#4876AB',
                     margin: 5,
                   }}>
                   <Card.Title
@@ -236,6 +239,14 @@ const CategoriesScreen = () => {
           </View>
         </>
       )}
+      <Snackbar
+         visible={visible}
+         onDismiss={onDismissSnackBar}
+         action={{label: 'OK',
+           onPress: () => {setVisible(false)},
+           }}>
+          Category is deleted!
+      </Snackbar>
     </View>
   );
 };
@@ -253,7 +264,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //top: '-40%',
     //left: '40%',
-    backgroundColor: '#cc5200',
+    backgroundColor: '#4876AB',
   },
   fab2: {
     width: 40,
@@ -261,7 +272,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     //top: '-50%',
-    backgroundColor: '#cc5200',
+    backgroundColor: '#4876AB',
   },
   input: {
     backgroundColor: 'white',
@@ -276,7 +287,7 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#527a7a',
+    backgroundColor: '#f2f2f2',
   },
   buttonText: {
     color: 'white',
@@ -285,16 +296,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   submitButton: {
-    backgroundColor: '#191c2b',
+    backgroundColor: '#4876AB',
     padding: 12,
     marginBottom: 8,
     borderRadius: 30,
   },
   categoryContainer: {
     flexDirection: 'row',
-
-    borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    
   },
   categoryName: {
     flex: 8,
@@ -312,10 +322,10 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#527a7a',
+    backgroundColor: '#f2f2f2',
   },
   updateButton: {
-    backgroundColor: '#191c2b',
+    backgroundColor: '#4876AB',
     padding: 12,
     marginTop: 8,
     borderRadius: 30,

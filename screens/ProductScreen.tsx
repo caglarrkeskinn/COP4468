@@ -1,7 +1,5 @@
 import {
   FlatList,
-  InteractionManager,
-  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -9,7 +7,6 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Card, FAB, Snackbar} from 'react-native-paper';
 
@@ -71,12 +68,12 @@ const ProductScreen = () => {
   };
 
   return (
-    <View style={{backgroundColor: '#527a7a', flex: 1}}>
+    <View style={{backgroundColor: '#f2f2f2', flex: 1}}>
       <View
         style={{
-          backgroundColor: '#5c8a8a',
+          backgroundColor: '#3daeaf',
           borderBottomWidth: 10,
-          borderBottomColor: '#cc5200',
+          borderBottomColor: '#4876AB',
           alignItems: 'stretch',
           borderBottomLeftRadius: 25,
           borderBottomRightRadius: 25,
@@ -122,7 +119,7 @@ const ProductScreen = () => {
                     borderBottomWidth: 2,
                     borderRadius: 10,
                     borderBottomColor: 'black',
-                    backgroundColor: '#cc5200',
+                    backgroundColor: '#4876AB',
                     margin: 5,
                   }}
                   onPress={() => handleItemPress(item.id)}>
@@ -191,7 +188,7 @@ const ProductScreen = () => {
                     borderBottomWidth: 2,
                     borderRadius: 10,
                     borderBottomColor: 'black',
-                    backgroundColor: '#cc5200',
+                    backgroundColor: '#4876AB',
                     margin: 5,
                   }}
                   onPress={() => handleItemPress(item.id)}>
@@ -227,7 +224,7 @@ const ProductScreen = () => {
                       <MaterialCommunityIcons
                         name="star"
                         size={25}
-                        color="black"
+                        color="#4876AB"
                       />
                     ) : (
                       <MaterialCommunityIcons
@@ -251,7 +248,7 @@ const ProductScreen = () => {
             <Card
               style={{
                 flexDirection: 'column',
-                backgroundColor: '#cc5200',
+                backgroundColor: '#4876AB',
               }}>
               <Card.Title
                 title={selectedProduct.name}
@@ -328,6 +325,7 @@ const ProductScreen = () => {
       <Snackbar
          visible={visible}
          onDismiss={onDismissSnackBar}
+         style={{marginBottom:55,backgroundColor:'#3daeaf'}}
          action={{label: 'OK',
            onPress: () => {setVisible(false)},
            }}>
@@ -345,7 +343,7 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#cc5200',
+    backgroundColor: '#4876AB',
     
   },
   fab2: {
@@ -354,6 +352,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     //top: '-50%',
-    backgroundColor: '#cc5200',
+    backgroundColor: '#4876AB',
   },
 });
