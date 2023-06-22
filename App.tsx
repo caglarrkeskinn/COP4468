@@ -1,13 +1,16 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import MyTab from './navigator/index'
+import MyTab from './navigator/index';
+import FavoritesProvider from './FavoritesProvider';
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <MyTab />
-    </NavigationContainer>
+    <FavoritesProvider>
+      <NavigationContainer>
+        <MyTab />
+      </NavigationContainer>
+    </FavoritesProvider>
   );
 };
 
