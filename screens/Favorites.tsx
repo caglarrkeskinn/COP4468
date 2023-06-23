@@ -1,14 +1,20 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useContext} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Product from '../Interfaces';
 import FavoritesContext from '../FavoritesContext';
+import {Card} from 'react-native-paper';
+import MyHeader from '../components/MyHeader';
 
-type Props = {};
+type Props = {
+  navigation: any;
+  route: any;
+};
 
-const Favorites = (props: Props) => {
+const Favorites = ({navigation, route}: Props) => {
   const {favorites, addToFavorites, removeFromFavorites, checkIsFavorite} =
     useContext(FavoritesContext);
+
   const handleDelete = (product: Product) => {
     removeFromFavorites(product);
   };
@@ -16,35 +22,55 @@ const Favorites = (props: Props) => {
   const handleFavorite = (product: Product) => {
     addToFavorites(product);
   };
+  const handleItemPress = (product: any) => {
+    navigation.navigate('ProductDetail', {
+      product: product,
+    });
+  };
   return (
-    <View style={{flex: 1}}>
-      {favorites.map((product: Product) => (
-        <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
-            style={{
-              justifyContent: 'center',
-            }}
-            onPress={() => handleDelete(product)}>
-            <MaterialCommunityIcons name="delete" size={25} color="black" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{
-              justifyContent: 'center',
-            }}
-            onPress={() => handleFavorite(product)}>
-            {checkIsFavorite(product.id) ? (
-              <MaterialCommunityIcons name="star" size={25} color="black" />
-            ) : (
-              <MaterialCommunityIcons
-                name="star-outline"
-                size={25}
-                color="black"
+    <View style={{flex: 4}}>
+      <MyHeader
+        leftIcon="chevron-left"
+        onLeftIconPress={() => navigation.goBack()}
+        title="Favorites"
+      />
+      <FlatList
+        data={favorites}
+        renderItem={({item}: {item: Product}) => (
+          <View style={{flexDirection: 'row'}}>
+            <Card
+              style={{
+                padding: 5,
+                flex: 8,
+                borderBottomWidth: 2,
+                borderRadius: 10,
+                borderBottomColor: 'black',
+                backgroundColor: '#4876AB',
+                margin: 5,
+              }}
+              onPress={() => handleItemPress(item.id)}>
+              <Card.Title
+                titleStyle={{
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  color: 'white',
+                }}
+                title={item.name}
               />
-            )}
-          </TouchableOpacity>
-        </View>
-      ))}
+            </Card>
+            <View style={{flex: 1, justifyContent: 'center'}}>
+              <TouchableOpacity
+                style={{
+                  justifyContent: 'center',
+                }}
+                onPress={() => handleDelete(item)}>
+                <MaterialCommunityIcons name="delete" size={25} color="black" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+        keyExtractor={(item: Product) => item.id.toString()}
+      />
     </View>
   );
 };

@@ -1,15 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, StyleSheet} from 'react-native';
 import axios from 'axios';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Card, FAB, Snackbar} from 'react-native-paper';
+import {Card, Snackbar} from 'react-native-paper';
+import MyHeader from '../components/MyHeader';
+import {useIsFocused} from '@react-navigation/native';
 
 interface Category {
   id: number;
@@ -18,20 +13,20 @@ interface Category {
   categoryId: number;
 }
 
-const CategoriesScreen = () => {
+const CategoriesScreen = ({navigation}: any) => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [categoryName, setCategoryName] = useState('');
-  const [categoryDetail, setCategoryDetail] = useState('');
-  const [show, setShow] = useState(true);
-  const [editCategory, setEditCategory] = useState<Category | null>(null);
-  const [editName, setEditName] = useState('');
-  const [editDetail, setEditDetail] = useState('');
   const [visible, setVisible] = useState(false);
-  const onDismissSnackBar = () => setVisible(false);
+  const isFocused = useIsFocused();
+  const [rerenderKey, setRerenderKey] = useState(0);
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    if (isFocused) {
+      setRerenderKey(prevKey => prevKey + 1);
+      fetchCategories();
+    }
+  }, [isFocused]);
+
+  const onDismissSnackBar = () => setVisible(false);
 
   const fetchCategories = async () => {
     try {
@@ -56,196 +51,78 @@ const CategoriesScreen = () => {
     }
   };
 
-  const handleSubmit = async () => {
-    try {
-      const response = await axios.post(
-        'https://northwind.vercel.app/api/categories',
-        {
-          name: categoryName,
-          description: categoryDetail,
-        },
-      );
-      setCategoryName('');
-      setCategoryDetail('');
-      fetchCategories();
-      setShow(!show);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleEdit = (category: Category) => {
-    setEditCategory(category);
-    setEditName(category.name);
-    setEditDetail(category.description);
-    setShowEditModal(true);
-    setShow(false);
-  };
-
-  const updateCategory = async () => {
-    try {
-      if (editCategory) {
-        await axios.put(
-          `https://northwind.vercel.app/api/categories/${editCategory.id}`,
-          {
-            name: editName,
-            description: editDetail,
-          },
-        );
-        setShowEditModal(false);
-        setShow(true);
-        fetchCategories();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const [showEditModal, setShowEditModal] = useState(false);
-
   return (
-    <View style={{backgroundColor: '#f2f2f2', flex: 1}}>
-      <View
-        style={{
-          borderBottomWidth: 10,
-          borderBottomColor: '#4876AB',
-          alignItems: 'stretch',
-          borderBottomLeftRadius: 25,
-          borderBottomRightRadius: 25,
-          backgroundColor: '#3daeaf',
-          marginBottom: 5,
-          flex: 0.5,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          padding: 20,
-        }}>
-        {!show && !showEditModal && (
-          <FAB
-            icon="arrow-left"
-            style={styles.fab2}
-            onPress={() => setShow(!show)}
-          />
-        )}
-        <Text
-          style={{
-            color: '#FFF',
-            fontSize: 35,
-            alignSelf: 'center',
-            top: '10%',
-            fontWeight: 'bold',
-          }}>
-          Category
-        </Text>
-        <FAB icon="plus" style={styles.fab} onPress={() => setShow(false)} />
-      </View>
+    <View key={rerenderKey} style={{backgroundColor: '#f2f2f2', flex: 1}}>
+      <MyHeader
+        rightIcon="plus"
+        onRightIconPress={() => navigation.navigate('AddToCategories')}
+        title="Category"
+      />
 
-      {show && (
-        <View style={{flex: 3}}>
-          <FlatList
-            data={categories}
-            renderItem={({item}: {item: Category}) => (
-              <View style={styles.categoryContainer}>
-                <Card
-                  style={{
-                    padding: 5,
-                    flex: 8,
-                    borderBottomWidth: 2,
-                    borderRadius: 10,
-                    borderBottomColor: 'black',
-                    backgroundColor: '#4876AB',
-                    margin: 5,
-                  }}>
-                  <Card.Title
-                    titleStyle={{
-                      textAlign: 'center',
-                      fontWeight: 'bold',
-                      color: 'white',
-                    }}
-                    title={item.name}></Card.Title>
-                  <Text>{item.description}</Text>
-                </Card>
+      <View style={{flex: 3}}>
+        <FlatList
+          data={categories}
+          renderItem={({item}: {item: Category}) => (
+            <View style={styles.categoryContainer}>
+              <Card
+                style={{
+                  padding: 5,
+                  flex: 8,
+                  borderBottomWidth: 2,
+                  borderRadius: 10,
+                  borderBottomColor: 'black',
+                  backgroundColor: '#4876AB',
+                  margin: 5,
+                }}>
+                <Card.Title
+                  titleStyle={{
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    color: 'white',
+                  }}
+                  title={item.name}></Card.Title>
+                <Text>{item.description}</Text>
+              </Card>
 
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                  <TouchableOpacity
-                    style={{justifyContent: 'center'}}
-                    onPress={() => deleteCategory(item.id)}>
-                    <MaterialCommunityIcons
-                      name="delete"
-                      size={25}
-                      color="black"
-                    />
-                  </TouchableOpacity>
-                </View>
-                <View style={{flex: 1, justifyContent: 'center'}}>
-                  <TouchableOpacity
-                    style={{justifyContent: 'center'}}
-                    onPress={() => handleEdit(item)}>
-                    <MaterialCommunityIcons
-                      name="pencil-box-multiple"
-                      size={25}
-                      color="black"
-                    />
-                  </TouchableOpacity>
-                </View>
+              <View style={{flex: 1, justifyContent: 'center'}}>
+                <TouchableOpacity
+                  style={{justifyContent: 'center'}}
+                  onPress={() => deleteCategory(item.id)}>
+                  <MaterialCommunityIcons
+                    name="delete"
+                    size={25}
+                    color="black"
+                  />
+                </TouchableOpacity>
               </View>
-            )}
-            keyExtractor={(item: Category) => item.id.toString()}
-          />
-        </View>
-      )}
-      {showEditModal && (
-        <View style={styles.editModalContainer}>
-          <Text>Edit Category</Text>
-          <TextInput
-            style={styles.input}
-            value={editName}
-            onChangeText={text => setEditName(text)}
-            placeholder="Category Name"
-          />
-          <TextInput
-            style={styles.input}
-            value={editDetail}
-            onChangeText={text => setEditDetail(text)}
-            placeholder="Category Detail"
-          />
-          <TouchableOpacity
-            style={styles.updateButton}
-            onPress={updateCategory}>
-            <Text style={styles.buttonText}>Update</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-      {!show && !showEditModal && (
-        <>
-          <View style={styles.containerAdd}>
-            <TextInput
-              style={styles.input}
-              placeholder="Category Name"
-              value={categoryName}
-              onChangeText={text => setCategoryName(text)}
-            />
-            <TextInput
-              style={styles.input}
-              placeholder="Category Detail"
-              value={categoryDetail}
-              onChangeText={text => setCategoryDetail(text)}
-            />
-
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={handleSubmit}>
-              <Text style={styles.buttonText}>Add to Categories</Text>
-            </TouchableOpacity>
-          </View>
-        </>
-      )}
+              <View style={{flex: 1, justifyContent: 'center'}}>
+                <TouchableOpacity
+                  style={{justifyContent: 'center'}}
+                  onPress={() =>
+                    navigation.navigate('EditCategory', {category: item})
+                  }>
+                  <MaterialCommunityIcons
+                    name="pencil-box-multiple"
+                    size={25}
+                    color="black"
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+          keyExtractor={(item: Category) => item.id.toString()}
+        />
+      </View>
       <Snackbar
-         visible={visible}
-         onDismiss={onDismissSnackBar}
-         action={{label: 'OK',
-           onPress: () => {setVisible(false)},
-           }}>
-          Category is deleted!
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: 'OK',
+          onPress: () => {
+            setVisible(false);
+          },
+        }}>
+        Category is deleted!
       </Snackbar>
     </View>
   );
@@ -304,7 +181,6 @@ const styles = StyleSheet.create({
   categoryContainer: {
     flexDirection: 'row',
     borderBottomColor: '#ccc',
-    
   },
   categoryName: {
     flex: 8,
