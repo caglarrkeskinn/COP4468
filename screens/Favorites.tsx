@@ -48,7 +48,7 @@ const Favorites = ({navigation, route}: Props) => {
                 backgroundColor: '#4876AB',
                 margin: 5,
               }}
-              onPress={() => handleItemPress(item.id)}>
+              onPress={() => handleItemPress(item)}>
               <Card.Title
                 titleStyle={{
                   textAlign: 'center',
